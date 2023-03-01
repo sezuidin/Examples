@@ -35,11 +35,9 @@ $patchedContent = @'
 ]
 '@
 
-$patchedContent
-
 try {
   $results = Invoke-RestMethod -Method Patch -Uri $patchUri -Headers $headers -Body $patchedContent -ContentType 'application/json-patch+json'
-  $results.value
+  $results
 }
 catch {
   Write-Error -Message "The following error occured: $_"

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "lawLocation": {
+      "defaultValue": "[resourceGroup().location]",
+      "type": "string",
+      "metadata": 
+      {
+        "description": "The location in which to create the Log Analytics Workspace."
+      }
+    },
+    "lawName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name for the Log Analytics Workspace."
+      }
+    },
+    "lawSku": {
+      "type": "string",
+      "allowedValues": [
+        "Free",
+        "PerNode",
+        "PerGB2018"
+      ],
+      "metadata": {
+        "description": "The SKU of the Log Analytics Workspace."
+      }
+    }
+  },
+  "functions": [],
+  "variables": {},
+  "resources": [
+    {
+      "name": "[parameters('lawName')]",
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "apiVersion": "2021-06-01",
+      "location": "[parameters('lawLocation')]",
+      "properties": {
+        "sku": {
+          "name": "[parameters('lawSku')]"
+        }
+      }
+    }
+  ],
+  "outputs": {}
+}

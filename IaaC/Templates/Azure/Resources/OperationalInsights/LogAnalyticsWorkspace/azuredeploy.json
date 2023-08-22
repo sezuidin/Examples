@@ -1,0 +1,75 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "defaultValue": "[resourceGroup().location]",
+      "type": "string",
+      "metadata": 
+      {
+        "description": "The location in which to create the Log Analytics Workspace."
+      }
+    },
+    "name": {
+      "defaultValue": "[concat('law-', uniqueString(resourceGroup().id))]",
+      "type": "string",
+      "metadata": {
+        "description": "The name for the Log Analytics Workspace."
+      }
+    },
+    "publicNetworkAccessForIngestion": {
+      "type": "string",
+      "allowedValues": [
+        "Disabled",
+        "Enabled"
+      ],
+      "metadata": {
+        "description": "Public network access to the Log Analytics workspace for ingestion. This can be Enabled or Disabled."
+      }
+    },
+    "publicNetworkAccessForQuery": {
+      "type": "string",
+      "allowedValues": [
+        "Disabled",
+        "Enabled"
+      ],
+      "metadata": {
+        "description": "Public network access to the Log Analytics workspace for query. This can be Enabled or Disabled."
+      }
+    },
+    "sku": {
+      "defaultValue": "Free",
+      "type": "string",
+      "allowedValues": [
+        "Free",
+        "PerGB2018"
+      ],
+      "metadata": {
+        "description": "The SKU of the Log Analytics workspace. This can be Free or PerGB2018."
+      }
+    }
+  },
+  "functions": [],
+  "variables": {},
+  "resources": [
+    {
+      "name": "[parameters('name')]",
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "apiVersion": "2021-06-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "publicNetworkAccessForIngestion": "[parameters('publicNetworkAccessForIngestion')]",
+        "publicNetworkAccessForQuery": "[parameters('publicNetworkAccessForQuery')]",
+        "sku": {
+          "name": "[parameters('sku')]"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "id": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('name'))]"
+    }
+  }
+}
